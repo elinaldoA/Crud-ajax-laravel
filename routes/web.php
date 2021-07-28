@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DataTableAjaxCRUDController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('ajax-crud-datable', [DataTableAjaxCRUDController::class, 'index']);
+Route::get('store-company', [DataTableAjaxCRUDController::class, 'store']);
+Route::get('edit-company', [DataTableAjaxCRUDController::class, 'edit']);
+Route::get('delete-company', [DataTableAjaxCRUDController::class, 'destroy']);

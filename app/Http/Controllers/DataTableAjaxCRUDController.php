@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Company;
+use Illuminate\Http\Request;
+
+class DataTableAjaxCRUDController extends Controller
+{
+    public function index()
+    {
+        if(request()->ajax())
+        {
+            return datatables()->of(Company::select('*'))
+            ->addColumn('action','company-action')
+            ->rawColumn('action')
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('companies');
+    }
+    public function store(Request $request)
+    {
+        $companyId = $request->id;
+
+        $company = Company::updateOrCreate(
+            [
+                'id' => $companyId
+            ],
+            [
+               'name' => $request->name, 
+               'email' => $request->email,
+               'address' => $request->address
+            ]);
+            return Response()->json($company);
+    }
+    public function edit(Request $request)
+    {
+        $where = array('id' => $request->id);
+        $company = Company::where($where)->first();
+
+        return Response()->json($company);
+    }
+    public function destroy(Request $request)
+    {
+        $company = Company::where('id',$request->id)->delete();
+
+        return Response()->json($company);
+    }
+}
